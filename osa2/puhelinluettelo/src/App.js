@@ -50,9 +50,6 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <form>
-        <div>filter shown with <input/></div>
-      </form>
       <div>
         <h2>Add a new</h2>
         <form onSubmit= {addName}>
