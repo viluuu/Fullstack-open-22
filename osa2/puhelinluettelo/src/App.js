@@ -1,27 +1,41 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import personService from './services/persons'
+import './index.css'
 
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '0505252522'}, 
-    { name: 'Matti Mättänen', number: '123123123'},
-    { name: 'Ville Räsänen', number: '000-000-0000'}
-  ])
+  const [persons, setPersons] = useState([]);
+  
+  const [filter, setFilter] = useState('filter not working');
 
-  const [newName, setNewName] = useState('')
-  const [newNumber, setNewNumber] = useState('')
+  const [newName, setNewName] = useState('');
+  const [newNumber, setNewNumber] = useState('');
+
+  const [notificationMessage, setNotificationMessage] = useState(null);
+
+
 
   useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
-  console.log('render', persons.length, 'persons');
+
+  const Notification = ({message}) => {
+    if (message === null) {
+      return null
+    }
+
+    return (
+      <div className='notificationMessage'>
+        {message}
+      </div>
+    )
+  }
 
   const addName = (event) => {
     event.preventDefault()
@@ -32,16 +46,54 @@ const App = () => {
 
     // Jos nimi on jo listassa niin ilmoitus ja nollataan newName
     if (persons.some(e => e.name === newName)) {
-      window.alert(`${newName} is already added to phonebook`);
+      const person = persons.find((p) => p.name === newName);
+      const id = person.id;
+      if(window.confirm('Nimi on jo listassa, haluatko päivittää numeron?'))
+      personService
+        .update(person.id, personObject)
+        .then(returnedPerson => {
+          persons.map((person) =>
+          person.id === id ? person : returnedPerson)
+          setPersons(persons);
+
+          setNotificationMessage(`Numero ${personObject.number} päivitettiin onnistuneesti`)
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
+        })
+
       setNewName('');
       setNewNumber('');
     }
     // Mikäli ei ole listassa lisätään nimi listaan
     else {
-      setPersons(persons.concat(personObject));
-      setNewName('');
-      setNewNumber('');
+      personService
+      .create(personObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+        setNewNumber('')
+      });
+      setNotificationMessage(`Nimi ${personObject.name} lisättiin onnistuneesti`)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000)
     }
+  }
+
+  // Nimen poisto
+  const removeName = (id, name) => {
+    if(window.confirm("Poistetaanko " + id.name))
+    personService
+      .remove(id)
+      .then((response) => {
+        const deletepersonList = persons.filter((person) => person.id !== id);
+        setPersons(deletepersonList);
+      })
+      setNotificationMessage(`Nimi ${name} poistettu onnistuneesti`)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000)
   }
 
   // Tapahtumankäsittelijät
@@ -53,9 +105,21 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
+  /*
+  const handleFilterChange = (event) => {
+    const filter = event.target.value;
+    setFilter(filter);
+    setPersonsToShow(
+      persons.filter((person) =>
+        person.name.toLowerCase().includes(filter.toLowerCase())
+      )
+    )
+  }
+  */
+
   const Person = ({person}) => {
     return (
-      <p> {person.name} {person.number} </p> 
+      <p> {person.name} {person.number} <button onClick={() => removeName(person.id, person.name)}>delete</button></p> 
     )
   }
 
@@ -63,6 +127,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMessage} />
+      <div>
+        filter shown with, en saanut filteriä toimimaan oikein...
+      </div>
       <div>
         <h2>Add a new</h2>
         <form onSubmit= {addName}>
