@@ -1,11 +1,6 @@
+import Weather from "./Weather";
 
-
-const Countries = ( {countriesToShow, setCountriesToShow} ) => {
-
-  const handleClick = ({country}) => {
-    setCountriesToShow([country])
-    console.log(countriesToShow);
-  }
+const Countries = ( {countriesToShow, setCountriesToShow, weatherData} ) => {
 
   // Kun listassa on yli kymmenen maata
   if (countriesToShow.length > 10) {
@@ -21,8 +16,9 @@ const Countries = ( {countriesToShow, setCountriesToShow} ) => {
       ))
   }
 
-  // Listassa vain yksi maa
-  return countriesToShow.map((country) => (
+  // Kun listassa on vain yksi maa jäljellä.
+  if (countriesToShow.length === 1) {
+    return countriesToShow.map((country) => (
       <div key={country.name.common}>
         <h2>{country.name.common}</h2>
         <div>Capital: {country.capital}</div>
@@ -33,9 +29,17 @@ const Countries = ( {countriesToShow, setCountriesToShow} ) => {
             <li key={language}>{language}</li>
           ))}
         </ul>
-        <img src={country.flags.png} width={250}/>
+        <img src={country.flags.png} width={250} alt={country.name.common}/>
+        <h3>Weather in {country.capital}</h3>
+        <div>
+          <Weather weatherData={weatherData}/>
+        </div>
       </div>
     ))
+  }
+
+  // Listassa vain yksi maa
+  
 }
 
 export default Countries;

@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import personService from './services/persons'
 import './index.css'
+import Person from './components/Person'
 
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  
-  const [filter, setFilter] = useState('filter not working');
 
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
@@ -65,6 +64,7 @@ const App = () => {
       setNewName('');
       setNewNumber('');
     }
+    
     // Mikäli ei ole listassa lisätään nimi listaan
     else {
       personService
@@ -105,32 +105,10 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
-  /*
-  const handleFilterChange = (event) => {
-    const filter = event.target.value;
-    setFilter(filter);
-    setPersonsToShow(
-      persons.filter((person) =>
-        person.name.toLowerCase().includes(filter.toLowerCase())
-      )
-    )
-  }
-  */
-
-  const Person = ({person}) => {
-    return (
-      <p> {person.name} {person.number} <button onClick={() => removeName(person.id, person.name)}>delete</button></p> 
-    )
-  }
-
-
   return (
     <div>
       <h2>Phonebook</h2>
       <Notification message={notificationMessage} />
-      <div>
-        filter shown with, en saanut filteriä toimimaan oikein...
-      </div>
       <div>
         <h2>Add a new</h2>
         <form onSubmit= {addName}>
@@ -142,11 +120,7 @@ const App = () => {
         </form>
       </div>
       <h2>Numbers</h2>
-      <div>
-        {persons.map(person => 
-          <Person key={person.name} person={person} /> 
-          )}
-      </div>
+      <Person persons = {persons} removeName = {removeName} />
     </div>
   )
 

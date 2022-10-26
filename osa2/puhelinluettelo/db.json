@@ -2,7 +2,7 @@
   "persons": [
     {
       "name": "Janne Ykkönen",
-      "number": "12333213",
+      "number": "12233231",
       "id": 3
     },
     {
@@ -26,29 +26,14 @@
       "id": 7
     },
     {
-      "name": "Ville Makkonen",
-      "number": "1233321321312",
-      "id": 8
-    },
-    {
-      "name": "Joona ",
-      "number": "23132321",
-      "id": 9
-    },
-    {
-      "name": "Ville",
-      "number": "12",
+      "name": "Roope Roopelainen",
+      "number": "2332123321321",
       "id": 10
     },
     {
-      "name": "Kalle",
-      "number": "123",
+      "name": "Janne Suomalainen",
+      "number": "123321231",
       "id": 11
-    },
-    {
-      "name": "Matti",
-      "number": "123",
-      "id": 12
     }
   ]
 }
