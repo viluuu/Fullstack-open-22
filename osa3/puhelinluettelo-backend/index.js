@@ -2,8 +2,13 @@ const http = require('http');
 const express = require('express');
 const { response } = require('express');
 const app = express();
+const morgan = require('morgan');
+
 
 app.use(express.json())
+
+morgan.token('body', (req, res) => JSON.stringify(req.body));
+app.use(morgan(':method :url :status :response-time ms :body'));
 
 let persons = [
     {
@@ -71,6 +76,9 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
+
+    
+    
 
     if (!body.name) {
         return response.status(400).json({
