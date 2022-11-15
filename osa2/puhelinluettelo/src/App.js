@@ -48,8 +48,8 @@ const App = () => {
     if (persons.some(e => e.name === newName)) {
       const person = persons.find((p) => p.name === newName);
       const id = person.id;
-      if(window.confirm('Nimi on jo listassa, haluatko päivittää numeron?'))
-      personService
+      if(window.confirm('Nimi on jo listassa, haluatko päivittää numeron?')) 
+        personService
         .update(person.id, personObject)
         .then(returnedPerson => {
           persons.map((person) =>
@@ -61,7 +61,6 @@ const App = () => {
             setNotificationMessage(null)
           }, 5000)
         })
-
       setNewName('');
       setNewNumber('');
     }
@@ -70,11 +69,18 @@ const App = () => {
     else {
       personService
       .create(personObject)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
+      .then(createdPerson => {
+        setPersons(persons.concat(createdPerson))
         setNewName('')
         setNewNumber('')
-      });
+      })
+      .catch(error => {
+        console.log(error.response.data)
+        setNotificationMessage(error.response.data)
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
+      })
       setNotificationMessage(`Nimi ${personObject.name} lisättiin onnistuneesti`)
       setTimeout(() => {
         setNotificationMessage(null)
@@ -90,11 +96,12 @@ const App = () => {
       .then((response) => {
         const deletepersonList = persons.filter((person) => person.id !== id);
         setPersons(deletepersonList);
+
+        setNotificationMessage(`Nimi ${name} poistettu onnistuneesti`)
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
       })
-      setNotificationMessage(`Nimi ${name} poistettu onnistuneesti`)
-      setTimeout(() => {
-        setNotificationMessage(null)
-      }, 5000)
   }
 
   // Tapahtumankäsittelijät
