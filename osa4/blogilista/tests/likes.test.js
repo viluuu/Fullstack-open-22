@@ -80,6 +80,19 @@ describe('total likes', () => {
       test('of a bigger list is calculated right', () => {
         const result = listHelper.likesTotal(blogs)
         expect(result).toBe(36)
-      }
-  )
+      })
+
+      // Favorite blog function test
+      test('favorite blog', () => {
+        const result = listHelper.favoriteBlog(blogs)
+        expect(result).toBe(blogs[2])
+      })
+
+      // Most blogs test
+      test('author with most blogs', () => {
+        const result = listHelper.mostBlogs(blogs)
+        expect(result.author).toBe("Robert C. Martin")
+      })
+
+
 })

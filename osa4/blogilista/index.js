@@ -1,4 +1,4 @@
-const app = require('./app')
+const app = require('./app') // Varsinainen express sovellus
 const http = require('http')
 const config = require('./utils/config');
 const logger = require('./utils/logger');
