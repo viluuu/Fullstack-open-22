@@ -28,6 +28,15 @@ blogsRouter.get("/:id", async (request, response) => {
   }
 })
 
+blogsRouter.put("/:id", async(request, response) => {
+  const blog = request.body
+  const id = request.params.id
+
+  const updatedBlog = await Blog.findByIdAndUpdate(id, blog)
+
+  response.json(blog)
+})
+
 
 blogsRouter.post("/", async (request, response, next) => {
   const body = request.body
@@ -45,7 +54,7 @@ blogsRouter.post("/", async (request, response, next) => {
     author: body.author,
     url: body.url,
     likes: body.likes,
-    user: user._id
+    user: user
   })
 
   const savedBlog = await blog.save()
