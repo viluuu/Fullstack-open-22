@@ -29,7 +29,11 @@ test('One blog added and lenght is 4. Blogs are returned as json', async () => {
         title: 'Neljäs blogi',
         author: 'Neljäs kirjoittaja',
         url: 'www.neljäsblogi.com',
-        likes: 4,
+        likes: 0,
+        user: {
+            username: "username",
+            name: "nimi"
+        }
     }
 
     await api

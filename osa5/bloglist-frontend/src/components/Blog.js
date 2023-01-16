@@ -43,7 +43,7 @@ const Blog = ({blog, updateLike, deleteBlog, user}) => {
   // If not visible show little info
   if (!visible) {
     return (
-      <div style={blogStyle}>
+      <div style={blogStyle} className='blog'>
         <div>
           {blog.title}
           <button onClick={() => setVisible(true)}>show more</button>
@@ -54,7 +54,7 @@ const Blog = ({blog, updateLike, deleteBlog, user}) => {
 
 
   return(
-  <div style={blogStyle}>
+  <div style={blogStyle} className='blog'>
     <div>{blog.title} <button onClick={() => setVisible(false)}>hide</button></div>
       <div>
         likes: {blog.likes} <button onClick={likeHandler}>like</button>
