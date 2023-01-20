@@ -19,14 +19,13 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const anecdotesReducer = (state = initialState, action) => {
+const anecdoteReducer = (state = initialState, action) => {
     switch(action.type) {
         case 'VOTE': {
             const votedAnecdote = state.find(anecdote => anecdote.id === action.data.id)
             const switchAnecdote = {
                 ...votedAnecdote, votes: votedAnecdote.votes + 1
             }
-
             const tempState = state.map(anecdote => anecdote.id !== action.data.id ? anecdote : switchAnecdote)
             return tempState.sort((a, b) => b.votes - a.votes)
         }
@@ -44,10 +43,10 @@ const anecdotesReducer = (state = initialState, action) => {
 
 }
 
-export const voteAnecdote = (id) => {
+export const voteAnecdote = anecdote => {
     return {
         type: 'VOTE',
-        data: {id}
+        data: anecdote
     }
 }
 
@@ -58,4 +57,4 @@ export const addAnecdote = (content) => {
     }
 }
 
-export default anecdotesReducer
+export default anecdoteReducer
