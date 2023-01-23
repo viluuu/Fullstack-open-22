@@ -1,9 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
 import { newNotification} from "../reducers/notificationReducer";
+import { orderBy } from 'lodash'
 
 const AnectodeList = (props) => {
     const anecdotes = useSelector(state => state.anecdotes)
+    const anecdotesSortedDescending = orderBy(anecdotes, ['votes'], ['desc'])
     const dispatch = useDispatch()
 
     const vote = (anecdote) => {
@@ -13,7 +15,7 @@ const AnectodeList = (props) => {
 
     return (
         <div>
-            {anecdotes.map(anecdote => 
+            {anecdotesSortedDescending.map(anecdote =>
                 <div key={anecdote.id}>
                     <div>
                         {anecdote.content}
