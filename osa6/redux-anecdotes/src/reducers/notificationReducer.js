@@ -1,3 +1,4 @@
+
 const notificationReducer = (state = null, action) =>  {
     switch (action.type) {
         case 'SHOW':
@@ -8,6 +9,8 @@ const notificationReducer = (state = null, action) =>  {
             return state
     }
 }
+
+
 
 export const newNotification = (notification) => {
     return dispatch => {
@@ -24,5 +27,4 @@ export const newNotification = (notification) => {
         }, 5000)
     }
 }
-
 export default notificationReducer
